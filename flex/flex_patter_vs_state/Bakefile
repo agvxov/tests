@@ -1,0 +1,10 @@
+@BAKE
+flex -o pattern.yy.c pattern.l
+flex -o   state.yy.c   state.l
+gcc  -o pattern.out  pattern.yy.c -lfl -g
+gcc  -o   state.out    state.yy.c -lfl -g
+python -c '''print("/*", "".join([ "a" for i in range(0,1000000)]), "*/")''' | valgrind --tool=massif --massif-out-file=massif.out.pattern ./pattern.out
+python -c '''print("/*", "".join([ "a" for i in range(0,1000000)]), "*/")''' | valgrind --tool=massif --massif-out-file=massif.out.state   ./state.out
+ms_print massif.out.pattern
+ms_print massif.out.state
+@STOP
