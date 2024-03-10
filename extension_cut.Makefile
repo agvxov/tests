@@ -1,0 +1,2 @@
+mytarget.c.out:
+	echo $*
