@@ -1,0 +1,33 @@
+### We are ignoring preemptively anything that is likely to be generated one day ###
+# Pyhton
+venv/
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+# C/C++ build
+*.o
+*.out
+*.a
+*.so
+*.dll
+*.exe
+*.obj
+*.lib
+*.exp
+*.pdb
+*.ilk
+*.aps
+*.ncb
+*.gch
+*.gch.stamp
+# Tooling
+*.gdb-*
+*.gdb_*
+# Misc.
+*.bak
+*.tmp
+*.swp
+*.swo
+*.swn
+*.opendb
