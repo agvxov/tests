@@ -1,0 +1,41 @@
+This is test.info, produced by makeinfo version 7.1 from test.texi.
+
+
+File: test.info,  Node: Top,  Next: Introduction,  Up: (dir)
+
+My Program Manual
+*****************
+
+* Menu:
+
+* Introduction::    What my program does.
+* Usage::           How to use my program.
+
+
+File: test.info,  Node: Introduction,  Next: Usage,  Prev: Top,  Up: Top
+
+1 Introduction
+**************
+
+This is an introduction to my program.
+
+
+File: test.info,  Node: Usage,  Prev: Introduction,  Up: Top
+
+2 Usage
+*******
+
+This is how you use my program.
+
+
+Tag Table:
+Node: Top69
+Node: Introduction265
+Node: Usage412
+
+End Tag Table
+
+
+Local Variables:
+coding: utf-8
+End:
