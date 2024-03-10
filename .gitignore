@@ -24,6 +24,9 @@ __pycache__/
 # Tooling
 *.gdb-*
 *.gdb_*
+*.tags
+tags
+tags.*
 # Misc.
 *.bak
 *.tmp
