@@ -1,0 +1,24 @@
+\input texinfo
+@setfilename test.info
+@settitle My Program Manual
+
+@titlepage
+@title My Program Manual
+@author Your Name
+@end titlepage
+
+@node Top
+@top My Program Manual
+
+@menu
+* Introduction::    What my program does.
+* Usage::           How to use my program.
+@end menu
+
+@node Introduction
+@chapter Introduction
+This is an introduction to my program.
+
+@node Usage
+@chapter Usage
+This is how you use my program.
