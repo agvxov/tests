@@ -1,0 +1,13 @@
+Write a parser that accepts an arbitrary long string.
+The valid keywords are:
+    Head
+    Circle
+    Square
+    Tail
+The following input sequences should yield the following outputs:
+    HeadCircleTail          -> 1
+    HeadSquareTail          -> 2
+    HeadSquareTailSquare    -> 3
+Multiple inputs can be chained together in the input. E.g.:
+    HeadCircleTailHeadSquareTailSquare  -> 13
+Invalid input shall be rejected.
