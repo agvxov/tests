@@ -1,0 +1,58 @@
+>TTD
+
+### nagybani piac program: ###
+    >kontainer osztály (eladó lista)
+    >alma & körte árulás
+    >mást is lehessen árulni
+    -eladók:
+        >más árak
+        >alma & körte
+        >alku
+        >miből hány kiló
+        >mennyiért
+        -vásárlás(mi, mennyi, mennyiért) -> visszatérési ár: kereskedő válasza
+            if mennyi == r -> siker
+        >más alku stratégiák
+        >előző verziók megjegyzésbe
+
+### Minták kidolgozásra ###
+    >stratégia
+    >prototype
+    >szabad
+
+Stratégia:
+    >a stratégia viselkedés mint adat
+    >OOP-ben mint osztály
+    >alakalmazásával elkerülthető az alfaj robbanás
+    >segithet elkerültni mocskos if-else blockokat
+    >használata triviális, az új osztáj hierarchia szerepe néhány metódus
+      implementágása
+    >intuitív, álltalában akkor nem kerül alkalmazásra a viselkedés
+      complexitás mögött megbújik
+    >további előnye, hogy a viselkedés módosíthatóvá tehető a példány élet
+      ideje alatt
+    {
+        kacsák
+        van egy a beugróban
+        self.(menü példa)
+    }
+
+Prototype:
+    >(túl egyszerű)
+    >ha egy példány létrehozás kölcséges akkor lehet,
+      hogy a clónozása olcsóbb
+    >álltalában egy cloneable interface-el és egy clone() metódussal
+      implementálják
+    >új példányokat létezőkből hozunk létre
+    >létező példányok le "cache"-elése lehetséges
+
+Factory:
+    >polimorfikus alosztály generálás központja
+    >elhárít töbször ismételt if-else logikát
+    >a factory felhasználója decoupling-re kerül az alosztályoktól
+    >paraméterezéssel történi a megfelelő alosztály kiválasztása
+    >lehet metódus alalapon implementálva ahol a class *Factory egy metódusa
+      adja vissza a megfelelő osztályt (ez lehet statukus /* vagy szabad*/)
+    >segít a "ne használjuk new kulcsszó" tanács alkalmazását
+    >lehet több párhuzamos class hierarchiát egy abstract Factory osztályal
+      egy interface-re hozni { chicago/(new york) pizza gyáral}
