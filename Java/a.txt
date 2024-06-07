@@ -1,0 +1,6 @@
+// @BAKE plantuml $@ -o $*.png; nomacs $*.png
+@startuml
+
+Gerinces <- Kutya
+
+@enduml
