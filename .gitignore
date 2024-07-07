@@ -27,6 +27,7 @@ __pycache__/
 *.tags
 tags
 tags.*
+tmp-*
 # Misc.
 *.bak
 *.tmp
