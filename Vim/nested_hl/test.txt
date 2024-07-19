@@ -1,0 +1,11 @@
+region_A{
+    keyword_a;
+    keyword_ab;
+
+    region_AB{
+        keyword_a;
+        keyword_ab;
+    }
+}
+
+keyword_a;
