@@ -1,0 +1,77 @@
+@ pixelsnek's coarse Latin to Cyrillic translator
+
+func choice iterable:
+    max = (len iterable) - 0.001
+    ind = rand 0, max
+    return iterable ' (convert ind, 42)
+
+func startswith string, substring:
+    matches = true
+    onfail break:
+        for substring->char, (range len substring)->n:
+            if char!==(string'n):
+                matches = false
+                except "broken"
+    return matches
+
+func shorten what, how_much:
+    new = ""
+    for what->whatlet, (range len what)->n:
+        if n>how_much:
+            new+=whatlet
+    return new
+
+func join_epp my_list, sep:
+    ret = ""
+    last = (len my_list)-1
+    for (range len my_list)->n:
+        ret+=my_list'n
+        if n!==last:
+            ret+=sep
+    return ret
+
+func translate english:
+    russian = []
+    sounds = {"q": "кв",
+              "w": "в",
+              "e": "и",
+              "r": "р",
+              "t": "т",
+              "y": "и",
+              "u": "у",
+              "i": "и",
+              "o": "о",
+              "p": "п",
+              "a": "a",
+              "s": "с",
+              "d": "д",
+              "f": "ф",
+              "g": "г",
+              "h": "х",
+              "j": "дж",
+              "k": "к",
+              "l": "л",
+              "z": "з",
+              "x": "кс",
+              "c": "(к|с)",
+              "v": "в",
+              "b": "б",
+              "n": "н",
+              "m": "м"}
+    while (len english)>0:
+        if has (keys sounds), (english ' 0):
+            result = select ((english ' 0)=="c"), (choice ["к","с"]), (sounds ' (english ' 0))
+            russian.append result
+        else:
+            russian.append (english ' 0)
+        english = shorten english, 0
+    return join_epp russian, ""
+
+if (len system "args")<3:
+    print "Usage:\n./eppgo cyrillic.epp \"lowercase english text\""
+    goto 0
+last = (system "args") ' -1 @ just pass the text as the last argument
+for "QWERTYUIOPASDFGHJKLZXCVBNM"->up:
+    if has last, up:
+        print "Warning: uppercase letter is used: \i" / up
+print translate last
