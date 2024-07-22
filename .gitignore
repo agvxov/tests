@@ -21,6 +21,17 @@ __pycache__/
 *.ncb
 *.gch
 *.gch.stamp
+C_C++/sds/sds/
+# Java
+*.class
+*.jar
+# Haskell
+*.hi
+# Latex
+LaTeX/*.pdf
+LaTeX/*.synctex.gz
+LaTeX/*.aux
+LaTeX/*.log
 # Tooling
 *.gdb-*
 *.gdb_*
@@ -35,3 +46,5 @@ tmp-*
 *.swo
 *.swn
 *.opendb
+*.bin
+.do_ignore/
