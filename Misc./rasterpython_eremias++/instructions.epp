@@ -1,0 +1,28 @@
+@ comment
+
+instructions = [
+    ["syscall"],
+    ["sysret"],
+    ["sysexit"],
+    ["sysenter"],
+    ["leave"],
+    ["retf"],
+    ["retn"],
+    ["pause"],
+    ["hlt"],
+    ["lock"],
+]
+
+n = (len instructions) - 1
+
+for range n -> i:
+    print i
+    print instructions ' i
+
+func malformed_instruction i:
+    i2s = "\i" \ i
+    msg = "Instruction " + i2s + " is malformed"
+    print msg
+    goto 0
+
+malformed_instruction instructions ' 2
