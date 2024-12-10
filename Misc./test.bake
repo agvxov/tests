@@ -1,0 +1,5 @@
+@BAKE exit 12
+
+# bake: exit 12
+# output:
+# bake: Exit code 3072
