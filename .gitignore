@@ -24,6 +24,8 @@ __pycache__/
 *.yy.*
 *.tab.*
 C_C++/sds/sds/
+# Ada
+*.ali
 # Java
 *.class
 *.jar
