@@ -1,0 +1,27 @@
+\documentclass{book}
+\usepackage[dvipsnames, cmyk]{xcolor}
+\usepackage{tcolorbox,graphicx}
+\tcbuselibrary{skins}
+
+\setlength{\fboxrule}{0pt}
+
+\NewTColorBox
+    {notes}
+    { m !O{} }  % 1: title, 2: extra options
+    {
+        before title*={\framebox(5mm,5mm)[c]{\includegraphics[width=4mm,height=4mm]{danger.png}}},
+        title={{\bf#1}},
+        coltitle=white,
+        colframe=Violet,
+        colback=Violet,
+        coltext=white,
+        #2
+    }
+
+\begin{document}
+
+\begin{notes}{This is my title}
+    This is my test callout!
+\end{notes}
+
+\end{document}
