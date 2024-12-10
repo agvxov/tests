@@ -1,0 +1,20 @@
+\documentclass[a4paper,12pt]{article}
+\usepackage[T1]{fontenc}
+\PassOptionsToPackage{defaults=hu-min}{magyar.ldf}
+\usepackage[magyar]{babel}
+\usepackage{listings,xcolor,caption}
+
+\lstset{
+    language=Delphi,
+    basicstyle=\footnotesize\ttfamily,
+    numbers=left,
+    backgroundcolor=\color{lightgray},
+    frame=tlbr,
+    keywordstyle=\color{blue},
+}
+
+\renewcommand{\lstlistingname}{programkód}
+
+\begin{document}
+\lstinputlisting[caption=Egy Delphi kód,label=kod-delphi]{prog.pas}
+\end{document}
