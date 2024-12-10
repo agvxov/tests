@@ -1,0 +1,26 @@
+#!/bin/bash
+# NOTE: i gpt-ed this to show something to xolatile
+
+if [ "$#" -eq 0 ]; then
+    echo "Usage: $0 <manpage>"
+    exit 1
+fi
+
+path=$(man -w "$1" 2>/dev/null)
+if [ -z "$path" ]; then
+    echo "Manpage not found for $1"
+    exit 1
+fi
+
+if [[ "$path" =~ \.bz2$ ]]; then
+    decompressed=$(mktemp)
+    bzip2 -dc "$path" > "$decompressed"
+    path="$decompressed"
+fi
+
+groff -Tpdf -mandoc "$path" > "${1}.pdf"
+
+magick "${1}.pdf" -density 300 -background white -alpha remove -quality 100 "${1}.png"
+convert -append "${1}-*.png" "${1}.png"
+
+echo "Generated PNG: ${1}.png"
