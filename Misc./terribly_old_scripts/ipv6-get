@@ -1,0 +1,13 @@
+#!/bin/bash
+
+# Print kernel ipv6 enabled status
+
+enable -n echo
+
+fgrep 0 /proc/sys/net/ipv6/conf/all/disable_ipv6 &> /dev/null
+
+if [ $? == "0" ]; then
+	echo -e "IPv6 connections are currently \033[1menabled\033[0m."
+	else
+	echo -e "IPv6 connections are currently \033[1mdisabled\033[0m."
+fi
