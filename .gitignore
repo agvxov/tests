@@ -21,6 +21,8 @@ __pycache__/
 *.ncb
 *.gch
 *.gch.stamp
+*.yy.*
+*.tab.*
 C_C++/sds/sds/
 # Java
 *.class
