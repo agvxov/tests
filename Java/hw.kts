@@ -1,0 +1,2 @@
+// @BAKE kotlin $@
+println("hw")
