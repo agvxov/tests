@@ -1,0 +1,8 @@
+// @BAKE dot -Tpng $@ -o $*.png
+digraph G {
+    subgraph cluster_0 {
+        label = "Graphviz";
+        dot;
+        other_stuff;
+    }
+}
