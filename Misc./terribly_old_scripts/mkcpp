@@ -1,0 +1,155 @@
+#!/bin/bash
+# Script to automate basic C++ file creation.
+
+# XXX:
+#######
+
+# Logical variables
+VERBOSE=0
+FORCE=0
+
+MAIN=0
+C=0
+CPP=0
+H=0
+NAME=""
+
+help_() {
+# Help
+	echo "Usage:"
+	echo "	mkcpp [options] [type] -o [file] [...]"
+	echo "		-h   : print this message and quit"	
+	echo "		-f   : force (enable overwrite)"
+	echo "		-m   : mark [file] as a main() file"
+	echo "		[type]:"
+	echo "			-C   : basic C source file"	
+	echo "			-CPP : basic C++ source file"	
+	echo "			-H   : basic C/C++ header file"	
+	exit
+}
+
+generate() {
+	# Aliasing
+	FORCE=$1
+	VERBOSE=$2
+	MAIN=$3
+	C=$4
+	CPP=$5
+	H=$6
+	NAME=$7
+
+	#echo "force: $FORCE"
+	#echo "main: $MAIN"
+	#echo "c: $C"
+	#echo "cpp: $CPP"
+	#echo "h: $H"
+	#echo "name: $NAME"
+
+
+	# Sanity check
+	TYPE_SUM=$(expr $C + $CPP + $H)
+	if (( $TYPE_SUM > 1 )); then
+		echo "Too many types specified, quitting..."
+		exit
+	elif [ $TYPE_SUM == 0 ]; then
+		CPP=1	# default to cpp
+	fi
+
+	# check and default [file] name
+	if [ -z $NAME ]; then
+		[ $CPP == 1 ] && NAME=main.cpp
+		[ $H == 1 ] && NAME=header.h
+		[ $C == 1 ] && NAME=main.c
+	fi
+
+	# Safety check
+	if [ -e $NAME ] && [ $FORCE == 0 ]; then
+		echo "[file] found, cowardly refusing to overwrite. Force with the -f option. Quiting..."
+		exit 1
+	fi
+
+	# Create
+	[ $VERBOSE == 1 ] && echo " -> $NAME"
+	#touch $NAME
+
+	# Fill with text
+	TAB="	"
+	if [ $H == 1 ]; then
+		GUARD_NAME=$NAME
+		GUARD_NAME=${GUARD_NAME//./_}
+		GUARD_NAME=${GUARD_NAME//\//_}
+		GUARD_NAME=${GUARD_NAME^^}
+		cat <<- H_FILE > ./$NAME
+		#ifndef $GUARD_NAME
+		#define $GUARD_NAME
+		
+		#endif
+		H_FILE
+		return
+	fi
+
+	if [ $C == 1 ]; then
+		if [ $MAIN == 1 ]; then
+			cat <<- C_FILE_MAIN > ./$NAME
+			#include <stdio.h>
+			#include <stdlib.h>
+
+			signed main(int argc, char* argv[]){
+
+			${TAB}return 0;
+			}
+
+			C_FILE_MAIN
+			return
+		else
+			cat <<- C_FILE > ./$NAME
+			#include <stdio.h>
+			#include <stdlib.h>
+
+			C_FILE
+			return
+		fi
+	fi
+
+	if [ $CPP == 1 ]; then
+		if [ $MAIN == 1 ]; then
+			cat <<- CPP_FILE_MAIN > ./$NAME
+			#include <iostream>
+
+			using namespace std;
+
+			signed main(int argc, char* argv[]){
+
+			${TAB}return 0;
+			}
+
+			CPP_FILE_MAIN
+			return
+		else 
+			cat <<- CPP_FILE > ./$NAME
+			#include <iostream>
+
+			CPP_FILE
+			return
+		fi
+	fi
+}
+
+GENCOUNT=0
+NEXT=0
+
+# Check options
+for i in $@; do
+	[ $i == "-h" ] && help_ && exit 0
+	[ $i == "-v" ] && VERBOSE=1 && continue
+	[ $i == "-f" ] && FORCE=1 && continue
+	[ $i == "-m" ] && MAIN=1 && continue
+	[ $i == "-C" ] && C=1 && continue
+	[ $i == "-CPP" ] && CPP=1 && continue
+	[ $i == "-H" ] && H=1 && continue
+	[ $i == "-o" ] && NEXT=1 && continue
+	[ $NEXT == 1 ] && NAME=$i && generate $FORCE $VERBOSE $MAIN $C $CPP $H $NAME && GENCOUNT=$(expr $GENCOUNT + 1)
+done
+
+[ $GENCOUNT == 0 ] && generate $FORCE $VERBOSE $MAIN $C $CPP $H $NAME #&& GENCOUNT=$(expr $GENCOUNT + 1)
+
