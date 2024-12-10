@@ -1,0 +1,9 @@
+DROP TABLE FarmAnimals IF EXISTS;
+CREATE TABLE FarmAnimals (
+    ID INT PRIMARY KEY AUTO_INCREMENT,
+    Name VARCHAR(50) NOT NULL,
+    Animal VARCHAR(50) NOT NULL,
+    Type VARCHAR(50),
+    Quantity INT,
+    Location VARCHAR(50)
+);
