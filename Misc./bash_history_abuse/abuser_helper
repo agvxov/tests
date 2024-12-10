@@ -1,0 +1,4 @@
+rm .bash_history
+cbash -i < history_abuser.sh
+
+# HISTTIMEFORMAT='%y/%m/%d %T: '
