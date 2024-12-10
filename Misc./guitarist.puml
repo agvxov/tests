@@ -1,0 +1,13 @@
+@startuml
+class Guitar {
+  +strings: int
+  +play(): void
+}
+
+class Guitarist {
+  +Guitar: guitar
+  +play(): void
+}
+
+Guitarist --> Guitar : uses
+@enduml
