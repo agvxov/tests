@@ -1,0 +1,11 @@
+INSERT INTO "PUBLIC"."furniture_application$furniture" (name, price) VALUES ('Sofa', 500);
+INSERT INTO "PUBLIC"."furniture_application$furniture" (name, price) VALUES ('Dining Table', 350);
+INSERT INTO "PUBLIC"."furniture_application$furniture" (name, price) VALUES ('Bed', 700);
+INSERT INTO "PUBLIC"."furniture_application$furniture" (name, price) VALUES ('Wardrobe', 300);
+INSERT INTO "PUBLIC"."furniture_application$furniture" (name, price) VALUES ('Coffee Table', 150);
+INSERT INTO "PUBLIC"."furniture_application$furniture" (name, price) VALUES ('Bookshelf', 200);
+INSERT INTO "PUBLIC"."furniture_application$furniture" (name, price) VALUES ('Office Chair', 100);
+INSERT INTO "PUBLIC"."furniture_application$furniture" (name, price) VALUES ('Recliner', 450);
+INSERT INTO "PUBLIC"."furniture_application$furniture" (name, price) VALUES ('Dresser', 280);
+INSERT INTO "PUBLIC"."furniture_application$furniture" (name, price) VALUES ('End Table', 80);
+-- SCRIPT TO 'dump.sql';
