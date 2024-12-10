@@ -1,0 +1,68 @@
+#!/bin/bash
+
+readonly FILE_MANAGER="thunar"
+if [[ -z $EDITOR ]]; then
+	readonly EDITOR="vim"
+fi
+readonly THREAD_FOLDER="/home/jacob/mm/Threads"
+
+readonly RED="\33[31m"
+readonly YELLOW="\33[33m"
+readonly BOLD="\33[1m"
+readonly NORMAL="\33[0m"
+
+enable -n echo
+
+
+SUBFOLDER=""
+NAME=""
+
+
+function help(){
+	echo -e "	${BOLD}Script for setting up thread enviremnts as fast as possible.${NORMAL}"
+	echo ""
+	echo -e "${YELLOW}	mkthread [options]${NORMAL}"
+	echo "	    -h : print help message"
+	echo "	    -f [string] : specify subfolder"
+	echo "	    -o [file]   : specify thread name; mandatory"
+}
+
+function syn_error(){
+	echo -e "${RED}Incoherent syntax.${NORMAL}"
+	exit 2
+}
+
+while getopts "hf:o:" opt; do
+	case "$opt" in
+		h) help; exit ;;
+		f) 
+			SUBFOLDER=${OPTARG}
+			;;
+		o) 
+			NAME=${OPTARG}
+			;;
+		*) syn_error ;;
+		esac
+done
+
+if [[ $NAME == "" ]]; then
+	syn_error
+fi
+
+
+
+cd "$THREAD_FOLDER"
+if ! [[ $SUBFOLDER == "" ]]; then
+	if ! [[ -d $SUBFOLDER ]]; then
+		mkdir $SUBFOLDER
+	fi
+	cd "./$SUBFOLDER"
+fi
+mkdir $NAME
+cd $NAME
+
+
+
+touch $NAME.cdd
+$FILE_MANAGER .
+$EDITOR $NAME.cdd
