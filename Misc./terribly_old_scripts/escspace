@@ -1,0 +1,9 @@
+#!/usr/bin/python3
+
+# Escape all spaces in the provided string with '\\'s
+
+import sys
+
+r = sys.stdin.read()
+r = r.replace(" ", "\\ ")
+print(r, end="")
