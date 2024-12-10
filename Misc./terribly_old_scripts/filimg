@@ -1,0 +1,98 @@
+#!/bin/python3
+
+# Filter imageboard screenshots based on color profiles
+# Terribly broken; do not use
+
+from sys import argv
+import re
+import colorthief
+
+
+
+### Error checking: ###
+if(len(argv) < 2):
+	usage()
+	exit(1)
+
+
+
+### Flags: ###
+IB = False
+q  = 1
+
+
+
+### Consts: ###
+RETURNVAL = 0
+filimg_color_ib_safe_bg_min = (230, 240, 250)
+filimg_color_ib_safe_bg_max = (240, 250, 256)
+filimg_color_ib_safe_fg_min = (210, 215, 235)
+filimg_color_ib_safe_fg_max = (220, 230, 245)
+filimg_color_ib_nsfw_bg_min = (250, 250, 230)
+filimg_color_ib_nsfw_bg_max = (256, 256, 245)
+filimg_color_ib_nsfw_fg_min = (240, 220, 210)
+filimg_color_ib_nsfw_fg_max = (250, 235, 220)
+
+
+
+### Functions: ###
+def usage():
+	print("	Filters the input and return the ones from Image Boards")
+	print("	ibfind [file(s)]")
+	print("	    -h       : print (*this) help message")
+	print("	    -q [int] : set ImageThief color reading quality,")
+	print("	                (the higher the more precise)")
+	print("	    -i       : allow through images from Image Board")
+
+def color_tuple_inrange(x, min_, max_):
+	try:
+		if (x[0] >= min_[0] and x[0] <= max_[0]) and\
+		   (x[1] >= min_[1] and x[1] <= max_[1]) and\
+		   (x[2] >= min_[2] and x[2] <= max_[2]):
+			return True
+	except:
+		return False
+	return False
+
+
+
+### MAIN ###
+##### Handle Args #####
+i = 1
+while 1:
+	if argv[i][0] == "-":
+		if argv[i] == "-i":
+			IB = True
+			i = i + 1
+			continue
+		if argv[i] == "-h":
+			RETURNVAL = 1
+		if argv[i] == "-q":
+			i = i + 1
+			if re.match("\d+", argv[i]) != "":
+				q = int(argv[i])
+				i = i + 1
+				continue
+			RETURNVAL = 1
+		usage()
+		exit(RETURNVAL)
+	else:
+		break
+
+##### Analize #####
+while i < (len(argv) - 1):
+	try:
+		color_thief = colorthief.ColorThief(argv[i])
+		dominant_color = color_thief.get_color(quality=q)
+	except:
+		#print("Except file: " + argv[i])
+		i = i + 1
+		continue
+	#print(argv[i] + ": " + str(dominant_color))
+	if IB:
+		if color_tuple_inrange(dominant_color, filimg_color_ib_safe_bg_min, filimg_color_ib_safe_bg_max) or\
+		   color_tuple_inrange(dominant_color, filimg_color_ib_safe_fg_min, filimg_color_ib_safe_fg_max) or\
+		   color_tuple_inrange(dominant_color, filimg_color_ib_nsfw_bg_min, filimg_color_ib_nsfw_bg_max) or\
+		   color_tuple_inrange(dominant_color, filimg_color_ib_nsfw_fg_min, filimg_color_ib_nsfw_fg_max):
+			print(argv[i])
+	i = i + 1
