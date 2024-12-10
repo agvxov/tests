@@ -1,0 +1,73 @@
+#!/bin/bash
+# Script to automate basic html creation.
+
+# Logical variables
+FORCE=0
+HELP=0
+LIBBOX=0
+MALFORMED=1
+
+# Check options
+for i in $@
+	do
+		if [ $i == "-f" ]; then
+			FORCE=1
+			continue
+		fi
+		if [ $i == "-h" ]; then
+			HELP=1
+			break
+		fi
+		if [ $i == "-o" ]; then
+			MALFORMED=0
+			continue
+		fi
+	done
+
+if [ $HELP == 1 ]; then
+	echo "Usage:"
+	echo "	mkmake [options] -o [filename]"
+	echo "		-h  : print this message and quit"	
+	echo "		-f  : force (enable overwrite)"	
+	exit
+fi
+
+if [ $MALFORMED == 0 ]; then
+	HTMLFILE=$BASH_ARGV
+else
+	HTMLFILE="html.html"
+fi
+
+#echo $HTMLFILE
+
+if [ -e ./${HTMLFILE} ] && [ $FORCE == 0 ]; then
+	echo "File ${HTMLFILE} already exists."
+	echo "Cowardly refusing to overwrite..."
+	echo "Force with the -f option."
+	exit
+fi
+
+
+# Make make
+touch ${HTMLFILE}
+
+# Fill with text
+TAB="	"
+cat <<- HTMLHEREDOC > ./${HTMLFILE}
+<!DOCTYPE html>
+${TAB}<html>
+${TAB}${TAB}<!--
+${TAB}${TAB}${TAB}Creation Date: $(date)
+${TAB}${TAB}-->
+${TAB}${TAB}<head>
+${TAB}${TAB}${TAB}<title>TITLE</title>
+${TAB}${TAB}${TAB}<meta charset="utf-8">
+${TAB}${TAB}${TAB}<style>
+${TAB}${TAB}${TAB}</style>
+${TAB}${TAB}</head>
+${TAB}${TAB}<body>
+${TAB}${TAB}${TAB}<script>
+${TAB}${TAB}${TAB}</script>
+${TAB}${TAB}</body>
+${TAB}</html>
+HTMLHEREDOC
