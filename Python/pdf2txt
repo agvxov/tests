@@ -1,0 +1,10 @@
+#!/bin/python3
+from pypdf import PdfReader
+from sys import argv
+
+reader = PdfReader(argv[1])
+with open(argv[1] + ".txt", "w") as f:
+    for p in reader.pages:
+        t = p.extract_text()
+        print(t)
+        f.write(t)
