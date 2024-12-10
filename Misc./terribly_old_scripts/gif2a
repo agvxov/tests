@@ -1,0 +1,27 @@
+#!/bin/bash
+
+# Play gif as color ascii art
+# Usage: gif2a <gif file>+
+
+DIR=$(mktemp -d)
+
+for i in $@; do
+	if [ -z "$(file "$i" | grep "GIF image")" ]; then
+		echo "Not a GIF file."
+		continue
+	fi
+
+	declare -a dur=($(identify -format "%T " "$i"))
+	convert "$i" -coalesce +adjoin $DIR/GIF_FRAME.png
+
+	counter=0
+	for h in $DIR/*; do
+		jp2a --color --height=${LINES} $h
+		sleep 0.${dur[$counter]}0
+		counter=$(expr ${counter} + 1)
+	done
+
+	rm $DIR/*
+done
+
+rm -d $DIR
