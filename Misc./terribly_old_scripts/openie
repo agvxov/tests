@@ -1,0 +1,149 @@
+#!/bin/bash
+
+readonly USER_CONF="~/.openierc"
+ENV_CONF=""
+ENV_EXCLUSIVE=0
+CONF=""
+
+readonly RED="\33[31m"
+readonly YELLOW="\33[33m"
+readonly BOLD="\33[1m"
+readonly NORMAL="\33[0m"
+
+enable -n echo
+
+usage(){
+	echo -e "	${BOLD}Openie is a Bash script for making opening files\n	with the user's prefered application not a pain in the ass.${NORMAL}"
+	echo ""
+	echo -e "${YELLOW}	openie ([options] --) [command] [args]${NORMAL}"
+	echo "	    -h : print help message"
+	echo "	    -v : verbose"
+	echo "	    -q : quite; never prompt"
+	echo "	    -c [file] : append to rules from [file]"
+	echo "	    -o [file] : over write rules with the ones in [file]"
+	echo ""
+	echo -e "${YELLOW}	Config:${NORMAL}"
+	echo "	    + the default config file is ${USER_CONF}"
+	echo "	    + comment with \"#\""
+	echo "	    + whitespaces are ignored"
+	echo "	    + type can be either M for maching mimetype or S for matching file name"
+	echo -e "	    ${BOLD}<type> : <regex> : <exec>${NORMAL}"
+}
+
+syn_error(){
+	echo -e "${RED}Incoherent syntax.${NORMAL}"
+	exit 2
+}
+
+mimetype(){
+	local type
+	type="$(file -b --mime-type "$1")"
+	if [[ "$type" == 'inode/symlink' ]]; then
+		mimetype "$(readlink -f "$1")"
+	fi
+	return $type
+}
+
+prompt(){
+	echo -e "${RED}No suitable rule was defined.${NORMAL}"
+	echo -e -n "${BOLD}Please enter a program name: ${NORMAL}"
+	read -r -s APP
+}
+
+TRIM_SWAP=""
+trim(){
+	TRIM_SWAP="$(echo $1 | sed -e "s/^[[:space:]]*//g" -e "s/[[:space:]]*$//g")"
+}
+
+VERBOSE=0
+QUITE=0
+
+while getopts "hvc:o:" opt; do
+	case "$opt" in
+		h) usage; exit ;;
+		v) VERBOSE=1 ;;
+		q) QUITE=1 ;;
+		c) 
+			ENV_CONF=${OPTARG}
+			;;
+		o) 
+			ENV_CONF=${OPTARG}
+			ENV_EXCLUSIVE=1
+			;;
+		*) syn_error ;;
+		esac
+done
+
+shift $((OPTIND - 1))						# Get make subject file argument number 0
+if [[ $# -eq 0 ]]; then							# throw if it doesnt exist
+	syn_error
+fi
+
+if [[ $ENV_EXCLUSIVE -eq 0 ]]; then			# Set user config
+	CONF=("${USER_CONF}" "${ENV_CONF}")
+else
+	CONF=("${ENV_CONF}")
+fi
+
+USER_VARS=()
+IFS=':'
+for i in $CONF; do
+	if ! [[ -e $CONF ]]; then				# exist?
+			if [[ $QUITE -eq 0 ]]; then
+				echo -e "${YELLOW}Config file \"${CONF}\" doesn't exists, skipping.${NORMAL}"
+				fi
+		continue
+	fi
+	while read -r mtype regex APP; do
+		if [[ $mtype == "\#*" ]]; then	 	# if comments
+			continue
+		fi
+		# Ignore whitespaces
+		trim $mtype
+		mtype=$TRIM_SWAP
+		trim $regex
+		regex=$TRIM_SWAP
+		trim $APP
+		APP=$TRIM_SWAP
+		#if [[ $APP == 'emacs' ]]; then
+		#	echo -e "	${BOLD}${RED}Openie does NOT support faggotry."
+		#	echo -e "	Please use Vim instead.${NORMAL}"
+		#	exit 69
+		#fi
+		# Interpret variable
+		if [[ $mtype =~ var.* ]]; then
+			trim ${mtype:3}
+			echo "${YELLOW}var: $TRIM_SWAP added.${NORMAL}"
+			USER_VARS+=("$TRIM_SWAP")
+			continue
+		fi
+		# Interpret $mtype
+		if [[ $mtype == 'S' ]]; then		# if: for file name
+			toMatch="$1"
+			#echo "S"
+		elif [[ $mtype == 'M' ]]; then		# if: for mimetype
+			toMatch="$(mimetype $1)"
+			#echo "M"
+		else
+			continue						# if syntax error
+		fi
+		# Match with $regex
+		if [[ $toMatch =~ $regex ]]; then
+			if [[ $QUITE -eq 0 ]]; then
+				echo "${APP} $*"
+			fi
+			# Supstitute $APP if its a variable
+			if [[ $APP =~ ^\$.* ]]; then
+				for h in ${USER_VARS[@]}; do
+					echo "${APP:1} vs ${h%=*}"
+					if [[ ${APP:1} == ${h%=*} ]]; then
+						APP=${h#*=}
+						break
+					fi
+				done
+			fi
+			${APP} $* & disown
+			exit 0
+		fi
+		done < "$i"
+	done
