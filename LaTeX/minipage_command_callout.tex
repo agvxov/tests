@@ -1,0 +1,22 @@
+\documentclass{book}
+\usepackage{xcolor,graphicx}
+\usepackage{afterpage}
+
+\newcommand{\noticecallout}[2]{
+    \fcolorbox{black}{violet!20}{
+    \begin{minipage}{10cm}
+        \includegraphics[width=4mm,height=4mm]{danger.png}
+        {\bf #1!}
+
+        #2
+    \end{minipage}
+    }
+}
+
+\begin{document}
+    \noticecallout{Never pour boiling water on plants}{Its not great for them.}
+
+    \noticecallout{Dogs cannot survive great falls}{
+        You are thinking of cats. Please do not throw Rex off the roof, or he may never woof again.
+    }
+\end{document}
