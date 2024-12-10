@@ -1,0 +1,14 @@
+#!/bin/bash
+
+set -e
+VERSION="$(git tag | tail -1 | cut -c2-)"
+[ -z "$VERSION" ] && exit 1
+NAME="$(basename $PWD)-${VERSION}"
+TMP="/tmp/${NAME}"
+mkdir "$TMP" || rm -r "${TMP}"
+cp -r ./ "$TMP/"
+OPWD="$PWD"
+cd /tmp/
+tar -c -z "$NAME" -f "${NAME}.tar.gz"
+mv "${NAME}.tar.gz" "$OPWD"
+rm -r "${TMP}"
