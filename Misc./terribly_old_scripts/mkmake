@@ -1,0 +1,74 @@
+#!/bin/bash
+# Script to automate basic Makefile skeleton creation.
+
+# Logical variables
+C=0
+FORCE=0
+HELP=0
+
+# Check options
+for i in $@
+	do
+		if [ $i == "-c" ]; then
+			C=1
+			continue
+		fi
+		if [ $i == "-f" ]; then
+			FORCE=1
+			continue
+		fi
+		if [ $i == "-h" ]; then
+			HELP=1
+			break
+		fi
+	done
+
+if [ $HELP == 1 ]; then
+	echo "Usage:"
+	echo "	mkmake [options]"
+	echo "		-h  : print this message and quit"	
+	echo "		-f  : force (enable overwrite)"	
+	echo "		-c  : specialize for C compilation"	
+	exit
+fi
+
+if [ -e ./Makefile ] && [ $FORCE == 0 ]; then
+	echo "Makefile found, refusing to overwrite. Force with the -f option."
+	exit
+fi
+
+# Make make
+touch Makefile
+
+# Fill with text
+TAB="	"
+if [ $C == 1 ]; then
+	cat <<- MAKEHEREDOC > ./Makefile
+	CC:=g++
+	CFLAGS:=-g
+	LDLIBS:=
+	LDFLAGS:=
+	COMP:=\$(CC) \$(CFLAGS) \$(LDFLAGS) \$(LDLIBS)
+
+	OUTPUT:=
+
+	.PHONY: main clean run
+
+	main:
+	${TAB}\${COMP} [FILL_IN_HERE] -o \${OUTPUT}
+
+	clean:
+	${TAB}rm ./\${OUTPUT}
+
+	run:
+	${TAB}./\${OUTPUT}
+	MAKEHEREDOC
+else
+	cat <<- 'MAKEHEREDOC' > ./Makefile
+	.PHONY: main clean
+
+	main:
+
+	clean:
+	MAKEHEREDOC
+fi
