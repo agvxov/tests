@@ -1,0 +1,14 @@
+#!/bin/bash
+
+# Video to ascii art
+
+DIR=$(mktemp -d)
+
+ffmpeg -hide_banner -loglevel panic -i $1 -vf fps=5,scale=400:-1 $DIR/gif.gif
+convert $DIR/gif.gif -coalesce +adjoin $DIR/GIF_FRAME.png
+for i in $DIR/*; do
+	jp2a --color --height=${LINES} $i
+	sleep 0.2
+done
+
+rm -r $DIR/
