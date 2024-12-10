@@ -1,0 +1,60 @@
+#!/bin/python3
+
+# Appent picture text to filename
+# Respects max filename length
+
+### Init ###
+import os
+import sys
+from PIL import Image
+import pytesseract
+
+
+
+### "Consts" ####
+imageExt = [".jpg", ".jpeg", ".png"]
+
+
+
+### Functions ###
+
+MAX_FILE_NAME_LEN = 255
+
+def readText(file):
+	text = list(pytesseract.image_to_string(Image.open(file)))
+	goodtext = []
+
+	for i in text:
+		if i.isalnum():
+			goodtext += i
+		if i.isspace():
+			goodtext += '_'
+	return "".join(goodtext).lower()
+
+def appendRename(file, string):
+	if file.find("___-___") != -1:		# chech whether it has been already processed
+		return None
+	if len(file) > 255:					# check whether the file name isnt already too long
+		return None
+	split = os.path.splitext(file)
+	name = split[0] + "___-___" + string + split[1]
+	name = name[:(MAX_FILE_NAME_LEN - len(file))]
+	print('"' + file + '" -> "' + name + '"')
+	os.rename(file, name)
+	return name
+
+
+
+### Start ###
+
+if len(sys.argv) == 1:
+	print("No arguments supplied. Quiting...")
+	exit(2)
+
+if sys.argv[1] != "--all":
+	appendRename(sys.argv[1], readText(sys.argv[1]))
+else:
+	for file in os.listdir(os.getcwd()):
+		for i in imageExt:
+			if file.endswith(i):
+				appendRename(file, readText(file))
