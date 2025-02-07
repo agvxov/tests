@@ -1,0 +1,11 @@
+#!/bin/bash
+
+# Sync system clock with online time
+
+[ "$UID" != "0" ] && printf "\033[31;1mYou must be root to perform this operation.\033[0m\n" &> /dev/stderr && exit 1
+EDATE="$(edate)"
+EDATE=${EDATE//./-}
+EDATE=${EDATE//- / }
+date --set "${EDATE}"
+hwclock --systohc
+date
