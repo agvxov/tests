@@ -1,0 +1,54 @@
+Table staff {
+    id int [primary key]
+    first_name varchar
+    last_name varchar
+    email varchar
+    username varchar
+    password varchar
+}
+
+Table animal {
+    id int [primary key]
+    name varchar
+    species_id int [ref: > species.id]
+    enclosure_id int [ref: > enclosure.id]
+    birth datatime
+    is_alive bool
+}
+
+Table species {
+    id int [primary key]
+    common_name varchar
+    latin_name varchar
+    is_cluster bool [note: "E.g. fire ant hive"]
+}
+
+Table enclosure {
+    id int
+    size float
+    is_open bool
+}
+
+Table enclosure_specification {
+    id int
+    description varchar
+}
+
+Table ticket {
+    id int
+    sold datetime
+    type int [ref: > ticket_type.id]
+}
+
+Table ticket_type {
+    id int
+    name varchar
+    description varchar
+    price int
+    visitor_count int [note: "Account for group tickets. Useful for statistics."]
+    is_soft_deleted bool
+}
+
+Ref: enclosure.id <> enclosure_specification.id
+Ref: species.id <> enclosure_specification.id
+Ref: staff.id <> animal.id

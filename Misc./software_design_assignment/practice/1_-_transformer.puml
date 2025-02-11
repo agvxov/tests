@@ -1,0 +1,65 @@
+@startuml
+/' @BAKE
+    plantuml $@
+    nomacs $*.png
+   @STOP
+ '/
+left to right direction
+
+skinparam rectangle {
+    BackgroundColor lightgrey
+}
+
+title The Transformer Architecture
+
+rectangle "Multi-Head Attention" {
+    (query) --> (linear₁)
+    (key)   --> (linear₂)
+    (value) --> (linear₃)
+
+    (linear₁) -- (Scaled Dot-Product Attention)
+    (linear₂) -- (Scaled Dot-Product Attention)
+    (linear₃) -- (Scaled Dot-Product Attention)
+
+    (Scaled Dot-Product Attention) -- (Concat)
+}
+
+rectangle {
+    (Multi-Head Attentionₐ) --  (Add & Normₐ₁)
+    (Add & Normₐ₁)          --> (Feed Forwardₐ)
+    (Feed Forwardₐ)         --  (Add & Normₐ₂)
+
+    (Add & Normₐ₁) --|> (Add & Normₐ₂)
+}
+
+rectangle {
+    (Masked Multi-head attention₁) --  (Add & Normₑ₁)
+    (Add & Normₑ₁)                 --> (Masked Multi-head attention₂)
+    (Masked Multi-head attention₂) --  (Add & Normₑ₂)
+    (Add & Normₑ₂)                 --> (Feed Forwardₑ)
+    (Feed Forwardₑ)                --  (Add & Normₑ₃)
+
+    (Add & Normₑ₁) --|> (Add & Normₑ₂)
+}
+
+(Input)  --> (Input Embedding)
+(Output) --> (Output Embedding)
+
+(Input Embedding)  --|> (Add & Normₐ₁)
+(Output Embedding) --|> (Add & Normₑ₁)
+
+(Input Embedding)  --> (Multi-Head Attentionₐ)
+(Input Embedding)  --> (Multi-Head Attentionₐ)
+(Input Embedding)  --> (Multi-Head Attentionₐ) : ⊕ Input Embedings
+(Output Embedding) --> (Masked Multi-head attention₁)
+(Output Embedding) --> (Masked Multi-head attention₁)
+(Output Embedding) --> (Masked Multi-head attention₁) : ⊕ Input Embedings
+
+(Linear) <-up- (Add & Normₑ₃)
+(Linear)  --> (Softmax)
+(Softmax) --> (Output probabilities)
+
+(Add & Normₐ₂) --> (Masked Multi-head attention₂)
+(Add & Normₐ₂) --> (Masked Multi-head attention₂)
+
+@enduml

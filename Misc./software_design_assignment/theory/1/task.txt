@@ -1,0 +1,19 @@
+TDD módszerével fejlessze le a következő feladatot:
+
+Az osztály neve legyen EgerTávolság.
+Eger-X város közötti távolságot egy HashMap-ben tárolom,
+ahol a kulcs az X város neve,
+érték az Eger-X város távolsága km-ben.
+Minden kalkuláció előtt meghívunk egy Pontosít példány pontosít() metódust,
+ami a szokásos szetterek segítségével beállítja,
+ha valamelyik város közúton közelebb,
+vagy távolabb került,
+pl. útkarbantartás miatt.
+Ez felolvas egy TXT-t, amiből látja a friss értékeket.
+Írjon egy boolean kivitelezhető(List<String> városNevek) metódust,
+ami igazat ad vissza,
+ha a városok összesen kevesebb,
+mint 500 km-re vannak Egertől,
+egyébként hamisat.
+Dobjon saját kivételt,
+ha a paraméter null.

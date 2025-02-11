@@ -1,0 +1,2 @@
+Budapest;140
+Szeged;200
