@@ -1,0 +1,9 @@
+imports:
+    bashtutor: source/bashtutor/
+    cd_rc:     source/cd_rc/
+
+git module bashtutor:
+    url: https://github.com/agvxov/bashtutor.git
+
+git module cd_rc:
+    url: https://github.com/agvxov/cd_rc

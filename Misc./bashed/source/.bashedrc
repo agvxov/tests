@@ -1,0 +1,61 @@
+# Recursively expand alias definitions to allow for appending
+## Original behaviour
+#   $ alias ls="ls -a"
+#   $ alias ls="ls -l"
+#   $ alias ls
+#   alias ls='ls -l'
+## Overriden behaviour
+#   $ recursivelyExpandedAlias ls="ls -a"
+#   $ recursivelyExpandedAlias ls="ls -l"
+#   $ recursivelyExpandedAlias ls
+#   recursivelyExpandedAlias ls='ls -a -l'
+function recursivelyExpandedAlias() {
+	KEY="${1%%=*}"
+	if eval "\alias '${KEY}'" &> /dev/null ; then
+		VALUE=${1#*=}
+		[ "${VALUE}" == "${KEY}" ] && (\alias "$@"; return)
+		LOOKUP="$(\alias ${KEY} | cut -d '=' -f 2 | cut -c 2- | rev | cut -c 2- | rev)"
+		VALUE="${VALUE//${KEY}/${LOOKUP}}"
+		\alias ${KEY}="${VALUE}"
+	else
+		\alias "$@"
+	fi
+}
+alias alias="recursivelyExpandedAlias"
+
+### Verbosification
+alias cp='cp -v'
+alias mv='mv -v'
+alias rm='rm -v'
+alias tar='tar -v'
+alias gzip='gzip -v'
+
+### Quiteing
+alias bc='bc -q'
+alias gdb='gdb -q'
+
+### Colorification
+alias dir='dir --color=auto'
+alias ls='ls --color=auto'
+alias grep='grep --color=auto'
+alias fgrep='fgrep --color=auto'
+alias egrep='egrep --color=auto'
+alias diff='diff --color=auto'
+alias tshark='tshark --color'
+alias bat='bat --italic-text always'
+alias hexedit='hexedit --color'
+alias less='less --use-color'
+export GCC_COLORS='error=01;31:warning=01;35:note=01;36:caret=01;32:locus=01:quote=01'
+
+### Formatting
+alias lsblk='lsblk -o LABEL,NAME,SIZE,FSUSE%,RM,RO,TYPE,FSTYPE,MOUNTPOINTS'
+alias nmap='nmap --stats-every 5s'
+function whereisAlias(){
+	\whereis $@ | awk -F ': ' -v OFS="" '{$1=""; print}'
+}
+alias whereis='whereisAlias'
+
+### Safety
+alias wget='wget --restrict-file-names=windows,ascii'
+alias rm='rm -I'
+alias yt-dlp='yt-dlp --restrict-filenames --no-overwrites'
