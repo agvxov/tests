@@ -1,0 +1,11 @@
+#!/bin/sh
+
+if [ "$1" == "on" ]; then
+	cryptsetup luksOpen /dev/nvme0n1p4 luks
+	mount /dev/mapper/luks /mnt
+elif [ "$1" == "off" ]; then
+	umount /dev/mapper/luks
+	cryptsetup luksClose luks
+fi
+
+lsblk
