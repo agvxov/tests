@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Formatted Table</title>
+    <style>
+        table {
+            border-collapse: collapse;
+            width: 100%;
+        }
+        th, td {
+            border: 1px solid black;
+            padding: 8px;
+            text-align: left;
+        }
+        th {
+            background-color: #f2f2f2;
+        }
+    </style>
+</head>
+<body>
+    <table>
+        <tr>
+            <th rowspan="2">Length</th>
+            <th colspan="6">Specifiers</th>
+        </tr>
+        <tr>
+            <th>d, i</th>
+            <th>u, o, x</th>
+            <th>f, e, g, a</th>
+            <th>c, s</th>
+            <th>p</th>
+            <th>n</th>
+        </tr>
+        <tr><td>(none)</td><td>int*</td><td>unsigned int*</td><td>float*</td><td>char*</td><td>void**</td><td>int*</td></tr>
+        <tr><td>hh</td><td>signed char*</td><td>unsigned char*</td><td></td><td></td><td></td><td>signed char*</td></tr>
+        <tr><td>h</td><td>short int*</td><td>unsigned short int*</td><td></td><td></td><td></td><td>short int*</td></tr>
+        <tr><td>l</td><td>long int*</td><td>unsigned long int*</td><td>double*</td><td>wchar_t*</td><td></td><td>long int*</td></tr>
+        <tr><td>ll</td><td>long long int*</td><td>unsigned long long int*</td><td></td><td></td><td></td><td>long long int*</td></tr>
+        <tr><td>j</td><td>intmax_t*</td><td>uintmax_t*</td><td></td><td></td><td></td><td>intmax_t*</td></tr>
+        <tr><td>z</td><td>size_t*</td><td>size_t*</td><td></td><td></td><td></td><td>size_t*</td></tr>
+        <tr><td>t</td><td>ptrdiff_t*</td><td>ptrdiff_t*</td><td></td><td></td><td></td><td>ptrdiff_t*</td></tr>
+        <tr><td>L</td><td></td><td></td><td>long double*</td><td></td><td></td><td></td></tr>
+    </table>
+</body>
+</html>
