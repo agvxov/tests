@@ -1,0 +1,6 @@
+#!/bin/bash
+
+CONFIG_D="$(dirname "$(realpath $0)")/config.d"
+SERVER="$(cat "${CONFIG_D}/ip_addr_retriever_site.var")"
+
+curl https://${SERVER}
