@@ -1,0 +1,11 @@
+%define lookup-function-name lookup
+%define hash-function-name hash_
+%readonly-tables
+%define word-array-name wordlist
+
+%%
+start
+stop
+restart
+status
+statis
