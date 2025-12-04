@@ -1,4 +1,4 @@
-// @BAKE g++ $@ -lraylib -lGL -lm -lpthread -ldl -lrt -lX11
+// @BAKE g++ -o $*.out $@ -lraylib -lGL -lm -lpthread -ldl -lrt -lX11
 #include "raylib.h"
 
 int main(void) {

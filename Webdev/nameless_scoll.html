@@ -1,29 +1,29 @@
 <html>
-    <body>
-        <div id=main-scroller>
-        </div>
-        <script>
-            const target = document.getElementById('main-scroller');
-            function addEntry(i = 0) {
-                const e = document.createElement('div');
-                e.innerText = `# Entry ${i}`;
-                e.style.height = '100px';
-                e.style.border = "2px solid blue";
-                e.style.margin = "10px";
-                target.appendChild(e);
-            }
+<body>
+    <div id=main-scroller>
+    </div>
+    <script>
+        const target = document.getElementById('main-scroller');
+        function addEntry(i = 0) {
+            const e = document.createElement('div');
+            e.innerText = `# Entry ${i}`;
+            e.style.height = '100px';
+            e.style.border = "2px solid blue";
+            e.style.margin = "10px";
+            target.appendChild(e);
+        }
 
-            function addPadder() {
-                const e = document.createElement('div');
-                e.style.height = (window.innerHeight - (100 + 10*2 + 2*2)) + "px";
-                target.appendChild(e)
-            }
+        function addPadder() {
+            const e = document.createElement('div');
+            e.style.height = (window.innerHeight - (100 + 10*2 + 2*2)) + "px";
+            target.appendChild(e)
+        }
 
-            // ---
-            for (let i = 0; i < 10; i++) {
-                addEntry(i);
-            }
-            addPadder();
-        </script>
-    </body>
+        // ---
+        for (let i = 0; i < 10; i++) {
+            addEntry(i);
+        }
+        addPadder();
+    </script>
+</body>
 </html>

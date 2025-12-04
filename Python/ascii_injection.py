@@ -1,5 +1,5 @@
 #!/usr/bin/python
 
-print "evil!";
+print("evil!");
 exit(0);
-#[2A[1Dprint "Hello World!"
+#[2A[1Dprint("Hello World!")[1E

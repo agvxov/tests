@@ -1,5 +1,5 @@
 /* @BAKE
-    gcc -o $* $@
+    gcc -o $* $@ -static
     strace ./opener
    @STOP
  */
