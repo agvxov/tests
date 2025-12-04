@@ -1,0 +1,5 @@
+# @BAKE make MYVAR=b
+MYVAR += a
+
+main:
+	@echo ${MYVAR}
