@@ -1,0 +1,23 @@
+<div style="position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%);">
+	<h1>Example webpage</h1>
+	<div>
+		<table>
+		</table>
+	<div>
+</div>
+<script>
+	let socket = new WebSocket('ws://localhost:8765');
+
+	socket.onmessage = (event) => {
+		let table = document.getElementsByTagName('table')[0];
+		table.innerHTML = '';
+		data = JSON.parse(event.data)
+		for(d in data){
+			var row = table.appendChild(document.createElement('tr'));
+			var key_cell = row.appendChild(document.createElement('td'));
+			var value_cell = row.appendChild(document.createElement('td'));
+			key_cell.innerText = d;
+			value_cell.innerText = data[d];
+		}
+	}
+</script>
