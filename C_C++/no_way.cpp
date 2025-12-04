@@ -1,4 +1,4 @@
-// @BAKE g++ $@ -O1 -Wall
+// @BAKE clang++-18 -o $* $@ -O1 -Wall
 #include <iostream>
 
 int main() {
