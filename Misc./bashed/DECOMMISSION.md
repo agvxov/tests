@@ -20,6 +20,7 @@ but briefly, its bloated,
 yet reverse search, completion, multi line editing and syntax highlighting
 are either shit or missing
 * tons of obscure features
+* globs are aweful; nullglob, dotglob and globstar are horrifying; no lazy eval possible
 
 ### Futures
 * i want to make my own shell, which is minimal, flexible and is based on Tcl
