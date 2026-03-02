@@ -1,0 +1,7 @@
+// @BAKE protoc --c_out=. player.proto
+syntax = "proto3";
+
+message Player {
+    float x = 1;
+    float y = 2;
+}
