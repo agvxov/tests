@@ -1,0 +1,11 @@
+use feature say;
+say log(1);
+say -log(1);
+my $x = -log(1);
+say $x;
+printf("%f\n", $x);
+say $x < 0;
+say $x > 0;
+say $x == 0;
+say $x eq '0';
+say $x eq '-0';
