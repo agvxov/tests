@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<!-- Hints:
+	you have access to "movies" because its passed in from the model,
+	(currently routes.py contains both the route and the model)
+	to know what is available either peek and under what name either peek at the model,
+	or give a very clear specification to me, detailing what you need
+
+	the { { } } syntax is called "mustage". not to be confused with the templating engine
+	under the same name, we are actually using jinja2
+	being able write a for loop should be enough. perhaps look up default values too.
+	the reason because i space { { } } weirdly here and above is that they are parsed even
+	inside comments, look out for that
+	the [''] thing marks a field, those will have the same name as inside the db
+-->
+<html>
+<head>
+    <title>Templating Example</title>
+</head>
+<body>
+    <h1>Movies</h1>
+    <ul>
+        {% for movie in movies %}
+            <li>{{ movie['title'] }}</li>
+        {% endfor %}
+    </ul>
+</body>
+</html>

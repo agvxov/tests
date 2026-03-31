@@ -1,0 +1,7 @@
+# Node
+source/node_modules/
+# SQL
+*.sqlite3
+# Python
+__pycache__
+venv
