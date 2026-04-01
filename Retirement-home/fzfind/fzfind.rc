@@ -1,0 +1,50 @@
+#!/bin/bash
+#
+# Plugin: fzfing
+# Description: fzf based file fuzzy finder for Bash
+# Author: Anon
+# Date: 2024
+# Version: 1.1
+# Source:
+#   mirror 1: http://bis64wqhh3louusbd45iyj76kmn4rzw5ysawyan5bkxwyzihj67c5lid.onion/anon/fzfind
+#   mirror 2: https://github.com/agvxov/fzfind
+
+
+[ -z "$FZFINDMETHOD" ] && FZFINDMETHOD="find"
+
+if [ -z "$FZFINDDOBIND" ] || $FZFINDDOBIND; then
+	bind -x '"\C-f": fzfind'
+fi
+
+
+function echo_readline_line(){
+	# Remove non-printable character sequence markers
+	PS1_CLEANED="${PS1//\\\[/}"
+	PS1_CLEANED="${PS1_CLEANED//\\\]/}"
+	# Insert position marker; Eval PS1
+	eval "env echo -e \"${PS1_CLEANED}${1:0:${2}}\033[45m \033[0m${1:${2}}\""
+}
+function fzfind(){
+	# Show command and substitution position
+		echo_readline_line "${READLINE_LINE}" "${READLINE_POINT}"
+	# Get narrowing substring
+		OPX=""
+		if [ "${READLINE_LINE:$(expr $READLINE_POINT - 1):1}" != " " ]; then
+			OPX=$(lastWord "${READLINE_LINE:0:${READLINE_POINT}}")
+		fi
+		if [ $FZFINDMETHOD == "find" ]; then
+			PX="$OPX"
+			STR=$(find ./"$PX/" 2> /dev/null | fzf --multi=1)
+		elif [ $FZFINDMETHOD == "locate" ]; then
+			PX="$(realpath  $PWD/$OPX)"
+			STR=$(locate --existing --regex $PX/'.*' 2> /dev/null | fzf --multi=1)
+		else
+			echo -e "\033[31;1mNonsensical \033[34;1m\${FZFINDMETHOD} \033[31;1mvalue.\033[0m"
+		fi
+	# Remove narrowing substring from result to prevent duplication
+		STR="${STR/${PX}/}"
+	# Write $READLINE_LINE
+		[ -z "$STR" ] && return
+		READLINE_LINE="${READLINE_LINE:0:$(expr ${READLINE_POINT} - ${#OPX})}\"${OPX}${STR}\"${READLINE_LINE:${READLINE_POINT}}"	# start_til_px + '"' + px + str '"' + rest
+		READLINE_POINT=$(expr ${READLINE_POINT} + ${#OPX} + ${#STR} + 2)	# +2 for the '"'s
+}
