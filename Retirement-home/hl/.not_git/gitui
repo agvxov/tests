@@ -1,0 +1,19 @@
+(
+    tab: 0,
+    diff: (
+        ignore_whitespace: false,
+        context: 3,
+        interhunk_lines: 0,
+    ),
+    status_show_untracked: None,
+    commit_msgs: [
+        "init",
+        "refactoring",
+        "+proper makefile",
+        "bump",
+        "refactoring and 0 leakage",
+        "bump",
+        "bump",
+        "bump",
+    ],
+)
