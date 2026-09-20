@@ -1,0 +1,17 @@
+imports:
+  raylib: library/raylib
+  box2d: library/box2d
+  libchad: library/libchad
+
+git module raylib:
+  url: https://github.com/raysan5/raylib
+  rev: 3e926d65a0dab63b098a9161075a2cf634d3ef23
+
+git module box2d:
+  url: https://github.com/erincatto/box2d
+  rev: c05c48738fbe5c27625e36c5f0cfbdaddfc8359a
+
+git module libchad:
+  url: https://github.com/BasedProject/libchad
+  recursive: true
+  rev: 3dff539c12367e280ee51ed7746ea8bf093724c7

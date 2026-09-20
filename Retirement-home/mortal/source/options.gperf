@@ -1,0 +1,11 @@
+%{
+enum {
+OPTION_NONE=0,
+OPTION_HELP,
+};
+%}
+struct options { char * name; int number; };
+%%
+help, OPTION_HELP
+h, OPTION_HELP
+?, OPTION_HELP
