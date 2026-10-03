@@ -7,4 +7,4 @@ Storing even the most trivial of examples used to make a lot more sense before A
 Since AI, one can generate those.
 I do not upload AI code.
 
-Ideas I abandon also come to die here.
+Ideas I abandon also come here to die.
