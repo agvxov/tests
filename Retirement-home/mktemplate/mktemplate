@@ -1,0 +1,88 @@
+#!/bin/bash
+
+enable -n echo
+
+readonly NORMAL="\33[0m"
+readonly BOLD="\33[1m"
+readonly RED="\33[31m"
+readonly GREEN="\33[32m"
+readonly YELLOW="\33[33m"
+readonly BLUE="\33[34m"
+
+readonly OPTERR="${Red}Unrecognized option supplied. Exiting...${NORMAL}"
+readonly EOPTS="ho:i:lc:e:x:"
+
+TPL_DIR="${MKTEMPLATE_HOME}"
+TPL_META_FILE="${TPL_DIR/}"
+OUTPUT=""
+TEMPLATE=""
+
+function usage() {
+	echo -e "${BOLD}mktemplate [options]${NORMAL}"
+	echo -e "	-h        : print this help message"
+	echo -e "	-o [file] : specifies output name"
+	echo -e "	-i [path] : override ${BOLD}${BLUE}\${MKTEMPLATE_HOME}${NORMAL}"
+	echo -e "	-l        : list existing template names"
+	echo -e "	-c [temp] : clone; specifies that a template is going to be copied and which it is"
+	echo -e "	-e [temp] : echo; like clone, but do not write to file, instead print to stdout"
+	echo -e "	-x [temp] : create; specifes that a new template is going to be added to the library and what it shall be called"
+	echo -e ""
+    echo -e "${YELLOW}This script attempts to eliminate user overhead of frequently coping a file to varying locations.${NORMAL}"
+	echo -e "${YELLOW}Mktemplate internally attempts to read a variable called ${BOLD}${BLUE}\"\${MKTEMPLATE_HOME}\"${NORMAL}${YELLOW}.${NORMAL}"
+	echo -e "${YELLOW}This variable shall hold the path to the folder where templates are stored.${NORMAL}"
+    echo -e "${YELLOW}\"Templates\" are just files located at ${BOLD}${BLUE}\${MKTEMPLATEHOME}${NORMAL}${YELLOW}.${NORMAL}"
+    echo -e "${YELLOW}Text files are processed through ${BOLD}m4${NORMAL}."
+}
+
+while getopts "$EOPTS" O; do
+	case "$O" in
+		h) usage; exit ;;
+		o) OUTPUT=${OPTARG} ;;
+		i) TPL_DIR=${OPTARG} ;;
+		l) ;;
+		e) ;;
+		c) ;;
+		x) ;;
+		*) echo -e "$OPTERR"; exit 1 ;;
+	esac
+done
+
+OPTIND=1
+while getopts "$EOPTS" O; do
+	case "$O" in
+		h) ;;
+		o) ;;
+		i) ;;
+		l) ls --color=always -1 ${TPL_DIR}; exit 1 ;;
+		e) TEMPLATE=${OPTARG} ;;
+		c) TEMPLATE=${OPTARG} ;;
+		x) TEMPLATE=${OPTARG} ;;
+		*) echo -e "$OPTERR"; exit 1 ;;
+	esac
+done
+
+[ -z "${MKTEMPLATE_HOME}" ] && TPL_DIR="${HOME}/mktemplate_home"
+[ ! -d "${MKTEMPLATE_HOME}" ] && mkdir "${TPL_DIR}"
+[ -z "${TEMPLATE}" ] && echo -e "${RED}No template specified. Unsure what to do. Quitting...${NORMAL}" && exit 1
+[ -z "${OUTPUT}" ] && OUTPUT="${TEMPLATE}"
+
+OPTIND=1
+while getopts "$EOPTS" O; do
+	case "$O" in
+		h) ;;
+		o) ;;
+		i) ;;
+		l) ;;
+		t) ;;
+		e) echo "$(source <(echo "echo \"$(< "${TPL_DIR}/${TEMPLATE}")\""))" ;;
+		c) 
+			if [[ $(mimetype "${TPL_DIR}/${TEMPLATE}") =~ plain/ ]] || [[ $(mimetype "${TPL_DIR}/${TEMPLATE}") =~ text/ ]]; then
+				cp <(m4 "${TPL_DIR}/${TEMPLATE}") "${OUTPUT}"
+			else
+				cp "${TPL_DIR}/${TEMPLATE}" "${OUTPUT}"
+			fi
+			;;
+		x) cp "${TEMPLATE}" "${TPL_DIR}/${OUTPUT}" ;;
+		*) echo -e "$OPTERR"; exit 1 ;;
+	esac
+done
